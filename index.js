@@ -28,7 +28,25 @@ app.get('/item/:id', function (req, res) {
   const item = lista[id]
 
   // Envio o item obtido como resultado HTTP
-  res.send(id)
+  res.send(item)
+})
+
+// Sinalizamos que o corpo da requisição está em JSOn
+app.use(express.json())
+
+// Create -> [POST] /item
+app.post('/item', function (req, res) {
+  // Extraimos o corpo da requisição
+  const body = req.body
+
+  // Pegamos o nome (string) que foi enviado dentro do corpo
+  const item = body.nome
+
+  // Colocamos o nome dentro da lista de itens
+  lista.push(item)
+
+  // Enviamos uma resposta de sucesso
+  res.send('Item adicionado com sucesso!')
 })
 
 app.listen(3000)
