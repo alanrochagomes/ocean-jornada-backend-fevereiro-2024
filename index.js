@@ -1,4 +1,17 @@
 const express = require('express')
+const { MongoClient } = require('mongodb')
+
+const dbUrl = 'mongodb+srv://admin:XZ6YjJYTJuAlMkmR@cluster0.kcksv4q.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+const dbName = 'OceanJornadaBackendFev2024'
+
+async function main() {
+
+const client = new MongoClient(dbUrl)
+
+console.log('Conectando ao banco de dados...')
+await client.connect()
+console.log("Banco de dados conectado com sucesso!")
+
 const app = express()
 
 app.get('/', function (req, res) {
@@ -12,9 +25,12 @@ app.get('/oi', function (req, res) {
 // Lista de Personagens
 const lista = ['Rick Sanchez', 'Morty Smith', 'Summer Smith']
 //                  0                1               2
+const db = client.db(dbName)
+const collection = db.collection('items')
 
 // Read All -> [GET] /item
 app.get('/item', function (req, res) {
+  collection.find().toArray()
   // Envio a lista inteira como resposta HTTP
   res.send(lista)
 })
@@ -50,3 +66,6 @@ app.post('/item', function (req, res) {
 })
 
 app.listen(3000)
+}
+
+main()
