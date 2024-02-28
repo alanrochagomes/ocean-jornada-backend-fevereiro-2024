@@ -2,7 +2,7 @@ const express = require('express')
 const { MongoClient, ObjectId } = require('mongodb')
 
 const dbUrl = 'mongodb+srv://admin:XZ6YjJYTJuAlMkmR@cluster0.kcksv4q.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-const dbName = 'OceanJornadaBackendFev2024'
+const dbName = 'Ocean-Jornada-Backend-Fev-2024'
 
 async function main() {
 
@@ -63,6 +63,23 @@ app.post('/item', async function (req, res) {
 
   // Enviamos uma resposta de sucesso
   res.send(item)
+})
+
+// Update -> [PUT] /item/:id
+app.put('/item/:id', async function (req, res) {
+  // Pegamos o ID recebido pela rota
+  const id = req.params.id
+
+  // Pegamos o novo item do corpo da requisição
+  const novoItem = req.body
+
+  // Atualizamos
+  await collection.updateOne(
+    { _id: new ObjectId(id) }, 
+    { $set: novoItem }
+  )
+
+  res.send('Item atualizado com sucesso!')
 })
 
 app.listen(3000)
