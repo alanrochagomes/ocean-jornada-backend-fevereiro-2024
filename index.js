@@ -73,13 +73,26 @@ app.put('/item/:id', async function (req, res) {
   // Pegamos o novo item do corpo da requisição
   const novoItem = req.body
 
-  // Atualizamos
+  // Atualizamos o Documento na Collection
   await collection.updateOne(
     { _id: new ObjectId(id) }, 
     { $set: novoItem }
   )
 
+  // Enviamos uma mensagem de sucesso
   res.send('Item atualizado com sucesso!')
+})
+
+// Delete -> [DELETE] /item/:id
+app.delete('/item/:id', async function (req, res) {
+  // Pegamos o ID da rota
+  const id = req.params.id
+
+  // Realizamos a operação de deleteOne
+  await collection.deleteOne({ _id: new ObjectId(id) })
+
+  // Enviamos uma mensagem de sucesso
+  res.send('Item removido com sucesso!')
 })
 
 app.listen(3000)
